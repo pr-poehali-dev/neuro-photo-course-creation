@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,146 +10,37 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeModule, setActiveModule] = useState<number | null>(null);
-  const [selectedLesson, setSelectedLesson] = useState<{moduleId: number, lessonId: number} | null>(null);
   const [progress, setProgress] = useState(0);
-  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
 
-  const handlePayment = async () => {
-    if (!email) {
-      toast({
-        title: 'Ошибка',
-        description: 'Укажите email',
-        variant: 'destructive'
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      const response = await fetch('https://functions.poehali.dev/befaee1f-f98e-4427-bfb6-f2b23ca5cb34', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, phone })
-      });
-      const data = await response.json();
-      
-      if (response.ok) {
-        toast({
-          title: 'Заявка принята!',
-          description: 'После оплаты на ' + email + ' придет доступ к курсу',
-        });
-      } else {
-        toast({
-          title: 'Ошибка',
-          description: data.error || 'Попробуйте позже',
-          variant: 'destructive'
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Ошибка',
-        description: 'Не удалось отправить заявку',
-        variant: 'destructive'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const toggleLessonComplete = (moduleId: number, lessonId: number) => {
-    const key = `${moduleId}-${lessonId}`;
-    setCompletedLessons(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(key)) {
-        newSet.delete(key);
-      } else {
-        newSet.add(key);
-      }
-      return newSet;
-    });
-  };
-
-  const modulesWithLessons = [
+  const modules = [
     {
       id: 1,
-      title: 'Основы автоматизации',
-      description: 'Погружение в мир автоматизации бизнеса без программирования',
+      title: 'Основы нейрофотосессии',
+      description: 'Погружение в мир AI-фотографии: от теории до практики',
       icon: 'Sparkles',
-      duration: '25 мин',
-      topics: ['Что такое автоматизация', 'Где искать задачи', 'Обзор инструментов'],
-      lessons: [
-        { id: 1, title: 'Что такое автоматизация и почему она нужна', duration: '7:00', description: 'Реальные примеры экономии времени и денег', videoUrl: '#' },
-        { id: 2, title: 'Где искать задачи для автоматизации', duration: '8:00', description: 'Чек-лист анализа своих процессов', videoUrl: '#' },
-        { id: 3, title: 'Инструменты автоматизации — обзор', duration: '9:00', description: 'Zapier, Make, n8n: что выбрать для старта', videoUrl: '#' }
-      ]
+      lessons: 8,
+      duration: '3 часа',
+      topics: ['Введение в нейросети', 'Выбор платформ', 'Базовые принципы', 'Анализ трендов']
     },
     {
       id: 2,
-      title: 'Автоматизация коммуникаций',
-      description: 'Telegram, WhatsApp, Email на автопилоте',
-      icon: 'MessageSquare',
-      duration: '36 мин',
-      topics: ['Telegram боты', 'WhatsApp рассылки', 'Email-цепочки', 'Квалификация клиентов'],
-      lessons: [
-        { id: 1, title: 'Автоответчик в Telegram за 15 минут', duration: '10:00', description: 'Создаём бота, который отвечает клиентам 24/7', videoUrl: '#' },
-        { id: 2, title: 'Рассылка в WhatsApp без блокировки', duration: '9:00', description: 'Безопасные методы массовой рассылки', videoUrl: '#' },
-        { id: 3, title: 'Автоматические email-цепочки', duration: '8:00', description: 'Настройка последовательности писем в Mailchimp', videoUrl: '#' },
-        { id: 4, title: 'Чат-бот для квалификации клиентов', duration: '10:00', description: 'Бот задаёт вопросы и сохраняет данные в таблицу', videoUrl: '#' }
-      ]
+      title: 'Промты и техники генерации',
+      description: 'Создание идеальных промтов для профессиональных результатов',
+      icon: 'Wand2',
+      lessons: 12,
+      duration: '5 часов',
+      topics: ['Структура промта', 'Стилизация', 'Композиция', 'Освещение и настроение']
     },
     {
       id: 3,
-      title: 'Автоматизация данных',
-      description: 'Сбор заявок, отчёты, мониторинг конкурентов',
-      icon: 'Database',
-      duration: '26 мин',
-      topics: ['Сбор заявок', 'Автоотчёты', 'Парсинг конкурентов'],
-      lessons: [
-        { id: 1, title: 'Автосбор заявок из всех источников', duration: '9:00', description: 'Email, форма, Telegram, WhatsApp в одну таблицу', videoUrl: '#' },
-        { id: 2, title: 'Автоматические отчёты в Google Sheets', duration: '8:00', description: 'Еженедельные отчёты на почту без участия человека', videoUrl: '#' },
-        { id: 3, title: 'Мониторинг конкурентов на автопилоте', duration: '9:00', description: 'Отслеживание цен и акций конкурентов', videoUrl: '#' }
-      ]
-    },
-    {
-      id: 4,
-      title: 'Автоматизация продаж',
-      description: 'Воронки, брошенные корзины, апсейл, реферальная программа',
+      title: 'Монетизация и продвижение',
+      description: 'Превращение навыков в стабильный доход',
       icon: 'TrendingUp',
-      duration: '34 мин',
-      topics: ['Воронка продаж', 'Возврат клиентов', 'Увеличение чека', 'Реферальная система'],
-      lessons: [
-        { id: 1, title: 'Автоматическая воронка продаж', duration: '10:00', description: 'От заявки до покупки без вашего участия', videoUrl: '#' },
-        { id: 2, title: 'Брошенные корзины — возвращаем клиентов', duration: '8:00', description: 'Серия писем для возврата +30% покупателей', videoUrl: '#' },
-        { id: 3, title: 'Автоматический апсейл после покупки', duration: '7:00', description: 'Увеличиваем средний чек предложениями', videoUrl: '#' },
-        { id: 4, title: 'Реферальная программа на автопилоте', duration: '9:00', description: 'Клиенты приводят клиентов — система сама платит бонусы', videoUrl: '#' }
-      ]
-    },
-    {
-      id: 5,
-      title: 'Итоговый проект',
-      description: 'Связываем все автоматизации в единую систему',
-      icon: 'Rocket',
-      duration: '12 мин',
-      topics: ['Интеграция всех систем', 'Реальный кейс', 'Экономия времени'],
-      lessons: [
-        { id: 1, title: 'Связка всех автоматизаций', duration: '12:00', description: 'От заявки до продажи — единая автоматическая система', videoUrl: '#' }
-      ]
+      lessons: 10,
+      duration: '4 часа',
+      topics: ['Поиск клиентов', 'Ценообразование', 'Портфолио', 'Маркетинг в соцсетях']
     }
   ];
-
-  const modules = modulesWithLessons.map(m => ({
-    id: m.id,
-    title: m.title,
-    description: m.description,
-    icon: m.icon,
-    lessons: m.lessons.length,
-    duration: m.duration,
-    topics: m.topics
-  }));
 
   const promptLibrary = [
     {
@@ -292,11 +180,7 @@ const Index = () => {
                   </DialogHeader>
                   <div className="space-y-6 py-4">
                     <div className="text-center">
-                      <div className="flex items-center justify-center gap-3 mb-2">
-                        <span className="text-3xl font-bold text-slate-500 line-through">5 990 ₽</span>
-                        <Badge className="bg-pink-500 text-white border-0">-50%</Badge>
-                      </div>
-                      <div className="text-5xl font-bold text-white mb-2">2 990 ₽</div>
+                      <div className="text-5xl font-bold text-white mb-2">14 990 ₽</div>
                       <div className="text-slate-400">Единоразовая оплата</div>
                     </div>
                     <div className="space-y-3">
@@ -317,60 +201,12 @@ const Index = () => {
                         <span>Бессрочный доступ</span>
                       </div>
                     </div>
-                    <div className="space-y-4">
-                      <div className="space-y-3">
-                        <div>
-                          <Label htmlFor="email" className="text-slate-300">Email для доступа *</Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            placeholder="your@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="bg-slate-800/50 border-purple-500/20 text-white mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="phone" className="text-slate-300">Телефон (опционально)</Label>
-                          <Input
-                            id="phone"
-                            type="tel"
-                            placeholder="+7 999 123-45-67"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="bg-slate-800/50 border-purple-500/20 text-white mt-1"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="bg-slate-800/50 p-4 rounded-xl border border-purple-500/20">
-                        <div className="text-sm text-slate-400 mb-2">Номер карты для оплаты:</div>
-                        <div className="flex items-center gap-3">
-                          <code className="text-lg font-mono text-purple-300">2204 3204 2826 7423</code>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10"
-                            onClick={() => {
-                              navigator.clipboard.writeText('2204320428267423');
-                            }}
-                          >
-                            <Icon name="Copy" size={16} />
-                          </Button>
-                        </div>
-                      </div>
-                      <Button 
-                        className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl" 
-                        size="lg"
-                        onClick={handlePayment}
-                        disabled={isSubmitting}
-                      >
-                        <Icon name="CreditCard" className="mr-2" size={20} />
-                        {isSubmitting ? 'Отправка...' : 'Я оплатил'}
-                      </Button>
-                    </div>
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl" size="lg">
+                      <Icon name="CreditCard" className="mr-2" size={20} />
+                      Оплатить через СБП
+                    </Button>
                     <p className="text-xs text-center text-slate-500">
-                      После оплаты вы получите доступ к курсу
+                      Безопасная оплата через Систему быстрых платежей
                     </p>
                   </div>
                 </DialogContent>
@@ -504,13 +340,7 @@ const Index = () => {
                         </Badge>
                       )}
                     </div>
-                    <Button 
-                      className="w-full bg-purple-600 hover:bg-purple-700 rounded-lg"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveModule(module.id);
-                      }}
-                    >
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 rounded-lg">
                       Начать модуль
                       <Icon name="ArrowRight" className="ml-2" size={16} />
                     </Button>
@@ -577,52 +407,29 @@ const Index = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {Array.from({ length: 12 }).map((_, index) => (
-                <Dialog key={index}>
-                  <DialogTrigger asChild>
-                    <Card 
-                      className="bg-slate-800/40 border-purple-500/20 overflow-hidden group hover-scale cursor-pointer"
-                      style={{ animationDelay: `${index * 50}ms` }}
-                    >
-                      <div className="aspect-square bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Icon name="Image" size={64} className="text-white/20 group-hover:scale-110 transition-transform" />
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                          <div className="space-y-1">
-                            <p className="text-white font-semibold text-sm">AI Portrait #{index + 1}</p>
-                            <p className="text-slate-300 text-xs">Trending style</p>
-                          </div>
-                        </div>
-                        {index % 3 === 0 && (
-                          <Badge className="absolute top-2 right-2 bg-pink-500 text-white border-0 text-xs">
-                            <Icon name="TrendingUp" size={12} className="mr-1" />
-                            Hot
-                          </Badge>
-                        )}
-                      </div>
-                    </Card>
-                  </DialogTrigger>
-                  <DialogContent className="bg-slate-900 border-purple-500/30 max-w-3xl">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl text-purple-300">AI Portrait #{index + 1}</DialogTitle>
-                      <DialogDescription className="text-slate-400">
-                        Пример работы в стиле нейрофотографии
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="aspect-square bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 relative overflow-hidden rounded-xl">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Icon name="Image" size={96} className="text-white/20" />
+                <Card 
+                  key={index}
+                  className="bg-slate-800/40 border-purple-500/20 overflow-hidden group hover-scale cursor-pointer"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="aspect-square bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 relative overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Icon name="Image" size={64} className="text-white/20 group-hover:scale-110 transition-transform" />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                      <div className="space-y-1">
+                        <p className="text-white font-semibold text-sm">AI Portrait #{index + 1}</p>
+                        <p className="text-slate-300 text-xs">Trending style</p>
                       </div>
                     </div>
-                    <div className="space-y-3">
-                      <div className="flex gap-2">
-                        <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">Portrait</Badge>
-                        <Badge className="bg-pink-500/20 text-pink-300 border-pink-500/30">AI Generated</Badge>
-                      </div>
-                      <p className="text-slate-300 text-sm">Изображение скоро появится в галерее</p>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                    {index % 3 === 0 && (
+                      <Badge className="absolute top-2 right-2 bg-pink-500 text-white border-0 text-xs">
+                        <Icon name="TrendingUp" size={12} className="mr-1" />
+                        Hot
+                      </Badge>
+                    )}
+                  </div>
+                </Card>
               ))}
             </div>
 
@@ -647,7 +454,7 @@ const Index = () => {
             <DialogTrigger asChild>
               <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg px-12 py-6 rounded-xl shadow-2xl hover-scale">
                 <Icon name="Rocket" className="mr-2" size={20} />
-                Купить курс за 2 990 ₽
+                Купить курс за 14 990 ₽
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-slate-900 border-purple-500/30 max-w-md">
@@ -659,11 +466,7 @@ const Index = () => {
               </DialogHeader>
               <div className="space-y-6 py-4">
                 <div className="text-center">
-                  <div className="flex items-center justify-center gap-3 mb-2">
-                    <span className="text-3xl font-bold text-slate-500 line-through">5 990 ₽</span>
-                    <Badge className="bg-pink-500 text-white border-0">-50%</Badge>
-                  </div>
-                  <div className="text-5xl font-bold text-white mb-2">2 990 ₽</div>
+                  <div className="text-5xl font-bold text-white mb-2">14 990 ₽</div>
                   <div className="text-slate-400">Единоразовая оплата</div>
                 </div>
                 <div className="space-y-3">
@@ -696,193 +499,6 @@ const Index = () => {
           </Dialog>
         </div>
       </section>
-
-      {/* Module Viewer Modal */}
-      <Dialog open={activeModule !== null} onOpenChange={(open) => !open && setActiveModule(null)}>
-        <DialogContent className="bg-slate-950 border-purple-500/30 max-w-7xl h-[90vh] p-0 overflow-hidden">
-          {activeModule && (() => {
-            const currentModule = modulesWithLessons.find(m => m.id === activeModule);
-            if (!currentModule) return null;
-
-            const currentLesson = selectedLesson?.moduleId === activeModule 
-              ? currentModule.lessons.find(l => l.id === selectedLesson.lessonId)
-              : currentModule.lessons[0];
-
-            return (
-              <div className="flex h-full">
-                {/* Sidebar with lessons */}
-                <div className="w-80 border-r border-purple-500/20 bg-slate-900/50 flex flex-col">
-                  <div className="p-6 border-b border-purple-500/20">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="mb-4 text-slate-400 hover:text-white"
-                      onClick={() => setActiveModule(null)}
-                    >
-                      <Icon name="ArrowLeft" size={16} className="mr-2" />
-                      Назад
-                    </Button>
-                    <h3 className="text-xl font-bold text-white mb-2">{currentModule.title}</h3>
-                    <div className="flex items-center gap-4 text-sm text-slate-400">
-                      <span className="flex items-center gap-1">
-                        <Icon name="Video" size={14} />
-                        {currentModule.lessons.length} уроков
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Icon name="Clock" size={14} />
-                        {currentModule.duration}
-                      </span>
-                    </div>
-                  </div>
-
-                  <ScrollArea className="flex-1 p-4">
-                    <div className="space-y-2">
-                      {currentModule.lessons.map((lesson, index) => {
-                        const isCompleted = completedLessons.has(`${activeModule}-${lesson.id}`);
-                        const isActive = currentLesson?.id === lesson.id;
-                        
-                        return (
-                          <Card
-                            key={lesson.id}
-                            className={`cursor-pointer transition-all ${
-                              isActive 
-                                ? 'bg-purple-600/20 border-purple-500' 
-                                : 'bg-slate-800/40 border-slate-700/50 hover:bg-slate-800/60 hover:border-purple-500/30'
-                            }`}
-                            onClick={() => setSelectedLesson({ moduleId: activeModule, lessonId: lesson.id })}
-                          >
-                            <CardContent className="p-4">
-                              <div className="flex items-start gap-3">
-                                <div 
-                                  className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 cursor-pointer ${
-                                    isCompleted ? 'bg-green-500' : 'bg-slate-700'
-                                  }`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleLessonComplete(activeModule, lesson.id);
-                                  }}
-                                >
-                                  {isCompleted && <Icon name="Check" size={14} className="text-white" />}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-xs text-slate-500">Урок {index + 1}</span>
-                                    <Badge variant="outline" className="text-xs border-purple-500/30 text-purple-300">
-                                      {lesson.duration}
-                                    </Badge>
-                                  </div>
-                                  <p className={`text-sm font-medium ${isActive ? 'text-white' : 'text-slate-300'}`}>
-                                    {lesson.title}
-                                  </p>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
-                </div>
-
-                {/* Main content area */}
-                <div className="flex-1 flex flex-col">
-                  {currentLesson && (
-                    <>
-                      {/* Video Player */}
-                      <div className="relative bg-black aspect-video">
-                        {currentLesson.videoUrl && currentLesson.videoUrl !== '#' ? (
-                          <iframe
-                            src={currentLesson.videoUrl}
-                            className="w-full h-full"
-                            allow="autoplay; fullscreen; picture-in-picture"
-                            allowFullScreen
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-slate-900/20">
-                            <div className="text-center">
-                              <div className="w-20 h-20 rounded-full bg-purple-600/20 flex items-center justify-center mb-4 mx-auto hover-scale cursor-pointer">
-                                <Icon name="Play" size={40} className="text-purple-400 ml-1" />
-                              </div>
-                              <p className="text-slate-400">Видео скоро появится</p>
-                              <p className="text-xs text-slate-500 mt-1">Длительность: {currentLesson.duration}</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Lesson Info */}
-                      <div className="flex-1 overflow-auto p-6 bg-slate-900/30">
-                        <div className="max-w-4xl mx-auto">
-                          <div className="flex items-center justify-between mb-6">
-                            <div>
-                              <h2 className="text-3xl font-bold text-white mb-2">{currentLesson.title}</h2>
-                              <div className="flex items-center gap-4 text-sm text-slate-400">
-                                <span className="flex items-center gap-1">
-                                  <Icon name="Clock" size={14} />
-                                  {currentLesson.duration}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <Icon name="User" size={14} />
-                                  Преподаватель
-                                </span>
-                              </div>
-                            </div>
-                            <Button
-                              variant={completedLessons.has(`${activeModule}-${currentLesson.id}`) ? "default" : "outline"}
-                              className={completedLessons.has(`${activeModule}-${currentLesson.id}`) 
-                                ? "bg-green-600 hover:bg-green-700" 
-                                : "border-purple-500/30 text-purple-300 hover:bg-purple-500/10"
-                              }
-                              onClick={() => toggleLessonComplete(activeModule, currentLesson.id)}
-                            >
-                              <Icon name="Check" size={16} className="mr-2" />
-                              {completedLessons.has(`${activeModule}-${currentLesson.id}`) ? 'Пройдено' : 'Отметить пройденным'}
-                            </Button>
-                          </div>
-
-                          <Card className="bg-slate-800/40 border-purple-500/20 mb-6">
-                            <CardHeader>
-                              <CardTitle className="text-white flex items-center gap-2">
-                                <Icon name="FileText" size={20} className="text-purple-400" />
-                                Описание урока
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                              <p className="text-slate-300 leading-relaxed">{currentLesson.description}</p>
-                            </CardContent>
-                          </Card>
-
-                          <div className="grid md:grid-cols-2 gap-4">
-                            {currentModule.lessons
-                              .filter(l => l.id !== currentLesson.id)
-                              .slice(0, 2)
-                              .map(nextLesson => (
-                                <Card 
-                                  key={nextLesson.id}
-                                  className="bg-slate-800/40 border-purple-500/20 hover:border-purple-500/40 cursor-pointer hover-scale"
-                                  onClick={() => setSelectedLesson({ moduleId: activeModule, lessonId: nextLesson.id })}
-                                >
-                                  <CardContent className="p-4">
-                                    <div className="flex items-center gap-2 mb-2">
-                                      <Icon name="PlayCircle" size={16} className="text-purple-400" />
-                                      <span className="text-xs text-slate-500">Следующий урок</span>
-                                    </div>
-                                    <p className="text-sm font-medium text-white mb-1">{nextLesson.title}</p>
-                                    <p className="text-xs text-slate-400">{nextLesson.duration}</p>
-                                  </CardContent>
-                                </Card>
-                              ))}
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })()}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
