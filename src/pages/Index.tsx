@@ -10,37 +10,95 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeModule, setActiveModule] = useState<number | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<{moduleId: number, lessonId: number} | null>(null);
   const [progress, setProgress] = useState(0);
+  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
-  const modules = [
+  const toggleLessonComplete = (moduleId: number, lessonId: number) => {
+    const key = `${moduleId}-${lessonId}`;
+    setCompletedLessons(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(key)) {
+        newSet.delete(key);
+      } else {
+        newSet.add(key);
+      }
+      return newSet;
+    });
+  };
+
+  const modulesWithLessons = [
     {
       id: 1,
       title: 'Основы нейрофотосессии',
       description: 'Погружение в мир AI-фотографии: от теории до практики',
       icon: 'Sparkles',
-      lessons: 8,
       duration: '3 часа',
-      topics: ['Введение в нейросети', 'Выбор платформ', 'Базовые принципы', 'Анализ трендов']
+      topics: ['Введение в нейросети', 'Выбор платформ', 'Базовые принципы', 'Анализ трендов'],
+      lessons: [
+        { id: 1, title: 'Введение в нейрофотографию', duration: '12:34', description: 'Что такое нейрофотография и почему она меняет индустрию', videoUrl: '#' },
+        { id: 2, title: 'Выбор AI-платформы', duration: '18:22', description: 'Обзор лучших платформ: Midjourney, DALL-E, Stable Diffusion', videoUrl: '#' },
+        { id: 3, title: 'Первая генерация', duration: '15:45', description: 'Создаём первое AI-изображение пошагово', videoUrl: '#' },
+        { id: 4, title: 'Анализ трендов 2025', duration: '22:11', description: 'Какие стили сейчас в топе и почему', videoUrl: '#' },
+        { id: 5, title: 'Базовые параметры', duration: '19:33', description: 'Разбираем ключевые настройки генерации', videoUrl: '#' },
+        { id: 6, title: 'Этика и авторство', duration: '14:28', description: 'Правовые аспекты использования AI-изображений', videoUrl: '#' },
+        { id: 7, title: 'Референсы и стили', duration: '17:55', description: 'Как правильно использовать референсные изображения', videoUrl: '#' },
+        { id: 8, title: 'Практическое задание', duration: '25:00', description: 'Создаём 5 разных стилей одного портрета', videoUrl: '#' }
+      ]
     },
     {
       id: 2,
       title: 'Промты и техники генерации',
       description: 'Создание идеальных промтов для профессиональных результатов',
       icon: 'Wand2',
-      lessons: 12,
       duration: '5 часов',
-      topics: ['Структура промта', 'Стилизация', 'Композиция', 'Освещение и настроение']
+      topics: ['Структура промта', 'Стилизация', 'Композиция', 'Освещение и настроение'],
+      lessons: [
+        { id: 1, title: 'Анатомия идеального промта', duration: '21:12', description: 'Структура промта: что писать и в каком порядке', videoUrl: '#' },
+        { id: 2, title: 'Ключевые слова и модификаторы', duration: '18:44', description: 'Магические слова, которые улучшают результат', videoUrl: '#' },
+        { id: 3, title: 'Управление композицией', duration: '23:15', description: 'Как задать нужный ракурс и кадрирование', videoUrl: '#' },
+        { id: 4, title: 'Работа с освещением', duration: '19:38', description: 'Cinematic lighting, golden hour и другие приёмы', videoUrl: '#' },
+        { id: 5, title: 'Стилизация: от реализма до фэнтези', duration: '26:42', description: 'Как задать художественный стиль изображению', videoUrl: '#' },
+        { id: 6, title: 'Negative prompts', duration: '16:33', description: 'Что исключить, чтобы получить идеальный результат', videoUrl: '#' },
+        { id: 7, title: 'Работа с деталями', duration: '20:55', description: 'Как прописать текстуры, материалы, детали одежды', videoUrl: '#' },
+        { id: 8, title: 'Эмоции и настроение', duration: '17:28', description: 'Передаём чувства через AI-генерацию', videoUrl: '#' },
+        { id: 9, title: 'Портретные промты', duration: '24:11', description: 'Специфика создания портретов высокого качества', videoUrl: '#' },
+        { id: 10, title: 'Лайфстайл сцены', duration: '22:37', description: 'Создаём атмосферные повседневные сцены', videoUrl: '#' },
+        { id: 11, title: 'Коммерческая фотография', duration: '19:44', description: 'Промты для продуктовой и рекламной съёмки', videoUrl: '#' },
+        { id: 12, title: 'Творческое задание', duration: '28:00', description: 'Создаём серию из 10 изображений в едином стиле', videoUrl: '#' }
+      ]
     },
     {
       id: 3,
       title: 'Монетизация и продвижение',
       description: 'Превращение навыков в стабильный доход',
       icon: 'TrendingUp',
-      lessons: 10,
       duration: '4 часа',
-      topics: ['Поиск клиентов', 'Ценообразование', 'Портфолио', 'Маркетинг в соцсетях']
+      topics: ['Поиск клиентов', 'Ценообразование', 'Портфолио', 'Маркетинг в соцсетях'],
+      lessons: [
+        { id: 1, title: 'Ниши и целевая аудитория', duration: '18:22', description: 'Где искать клиентов для AI-фотографий', videoUrl: '#' },
+        { id: 2, title: 'Создание портфолио', duration: '22:15', description: 'Как правильно оформить работы для продажи', videoUrl: '#' },
+        { id: 3, title: 'Ценообразование', duration: '16:44', description: 'Сколько стоит нейрофотосессия в 2025', videoUrl: '#' },
+        { id: 4, title: 'Площадки для продаж', duration: '20:33', description: 'Где продавать: стоки, маркетплейсы, соцсети', videoUrl: '#' },
+        { id: 5, title: 'Instagram для AI-фотографа', duration: '24:11', description: 'Стратегия продвижения в Instagram', videoUrl: '#' },
+        { id: 6, title: 'TikTok и YouTube Shorts', duration: '17:55', description: 'Вирусный контент с AI-генерациями', videoUrl: '#' },
+        { id: 7, title: 'Работа с клиентами', duration: '19:28', description: 'От первого контакта до сдачи проекта', videoUrl: '#' },
+        { id: 8, title: 'Пакеты услуг', duration: '15:42', description: 'Как упаковать предложения для разных ниш', videoUrl: '#' },
+        { id: 9, title: 'Масштабирование', duration: '21:37', description: 'От фриланса к агентству AI-фотографии', videoUrl: '#' },
+        { id: 10, title: 'Финальный проект', duration: '30:00', description: 'Создаём коммерческий кейс от А до Я', videoUrl: '#' }
+      ]
     }
   ];
+
+  const modules = modulesWithLessons.map(m => ({
+    id: m.id,
+    title: m.title,
+    description: m.description,
+    icon: m.icon,
+    lessons: m.lessons.length,
+    duration: m.duration,
+    topics: m.topics
+  }));
 
   const promptLibrary = [
     {
@@ -340,7 +398,13 @@ const Index = () => {
                         </Badge>
                       )}
                     </div>
-                    <Button className="w-full bg-purple-600 hover:bg-purple-700 rounded-lg">
+                    <Button 
+                      className="w-full bg-purple-600 hover:bg-purple-700 rounded-lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveModule(module.id);
+                      }}
+                    >
                       Начать модуль
                       <Icon name="ArrowRight" className="ml-2" size={16} />
                     </Button>
@@ -499,6 +563,184 @@ const Index = () => {
           </Dialog>
         </div>
       </section>
+
+      {/* Module Viewer Modal */}
+      <Dialog open={activeModule !== null} onOpenChange={(open) => !open && setActiveModule(null)}>
+        <DialogContent className="bg-slate-950 border-purple-500/30 max-w-7xl h-[90vh] p-0 overflow-hidden">
+          {activeModule && (() => {
+            const currentModule = modulesWithLessons.find(m => m.id === activeModule);
+            if (!currentModule) return null;
+
+            const currentLesson = selectedLesson?.moduleId === activeModule 
+              ? currentModule.lessons.find(l => l.id === selectedLesson.lessonId)
+              : currentModule.lessons[0];
+
+            return (
+              <div className="flex h-full">
+                {/* Sidebar with lessons */}
+                <div className="w-80 border-r border-purple-500/20 bg-slate-900/50 flex flex-col">
+                  <div className="p-6 border-b border-purple-500/20">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="mb-4 text-slate-400 hover:text-white"
+                      onClick={() => setActiveModule(null)}
+                    >
+                      <Icon name="ArrowLeft" size={16} className="mr-2" />
+                      Назад
+                    </Button>
+                    <h3 className="text-xl font-bold text-white mb-2">{currentModule.title}</h3>
+                    <div className="flex items-center gap-4 text-sm text-slate-400">
+                      <span className="flex items-center gap-1">
+                        <Icon name="Video" size={14} />
+                        {currentModule.lessons.length} уроков
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Icon name="Clock" size={14} />
+                        {currentModule.duration}
+                      </span>
+                    </div>
+                  </div>
+
+                  <ScrollArea className="flex-1 p-4">
+                    <div className="space-y-2">
+                      {currentModule.lessons.map((lesson, index) => {
+                        const isCompleted = completedLessons.has(`${activeModule}-${lesson.id}`);
+                        const isActive = currentLesson?.id === lesson.id;
+                        
+                        return (
+                          <Card
+                            key={lesson.id}
+                            className={`cursor-pointer transition-all ${
+                              isActive 
+                                ? 'bg-purple-600/20 border-purple-500' 
+                                : 'bg-slate-800/40 border-slate-700/50 hover:bg-slate-800/60 hover:border-purple-500/30'
+                            }`}
+                            onClick={() => setSelectedLesson({ moduleId: activeModule, lessonId: lesson.id })}
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-start gap-3">
+                                <div 
+                                  className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 cursor-pointer ${
+                                    isCompleted ? 'bg-green-500' : 'bg-slate-700'
+                                  }`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleLessonComplete(activeModule, lesson.id);
+                                  }}
+                                >
+                                  {isCompleted && <Icon name="Check" size={14} className="text-white" />}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-xs text-slate-500">Урок {index + 1}</span>
+                                    <Badge variant="outline" className="text-xs border-purple-500/30 text-purple-300">
+                                      {lesson.duration}
+                                    </Badge>
+                                  </div>
+                                  <p className={`text-sm font-medium ${isActive ? 'text-white' : 'text-slate-300'}`}>
+                                    {lesson.title}
+                                  </p>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                </div>
+
+                {/* Main content area */}
+                <div className="flex-1 flex flex-col">
+                  {currentLesson && (
+                    <>
+                      {/* Video Player */}
+                      <div className="relative bg-black aspect-video">
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-slate-900/20">
+                          <div className="text-center">
+                            <div className="w-20 h-20 rounded-full bg-purple-600/20 flex items-center justify-center mb-4 mx-auto hover-scale cursor-pointer">
+                              <Icon name="Play" size={40} className="text-purple-400 ml-1" />
+                            </div>
+                            <p className="text-slate-400">Видеоплеер</p>
+                            <p className="text-xs text-slate-500 mt-1">{currentLesson.duration}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Lesson Info */}
+                      <div className="flex-1 overflow-auto p-6 bg-slate-900/30">
+                        <div className="max-w-4xl mx-auto">
+                          <div className="flex items-center justify-between mb-6">
+                            <div>
+                              <h2 className="text-3xl font-bold text-white mb-2">{currentLesson.title}</h2>
+                              <div className="flex items-center gap-4 text-sm text-slate-400">
+                                <span className="flex items-center gap-1">
+                                  <Icon name="Clock" size={14} />
+                                  {currentLesson.duration}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Icon name="User" size={14} />
+                                  Преподаватель
+                                </span>
+                              </div>
+                            </div>
+                            <Button
+                              variant={completedLessons.has(`${activeModule}-${currentLesson.id}`) ? "default" : "outline"}
+                              className={completedLessons.has(`${activeModule}-${currentLesson.id}`) 
+                                ? "bg-green-600 hover:bg-green-700" 
+                                : "border-purple-500/30 text-purple-300 hover:bg-purple-500/10"
+                              }
+                              onClick={() => toggleLessonComplete(activeModule, currentLesson.id)}
+                            >
+                              <Icon name="Check" size={16} className="mr-2" />
+                              {completedLessons.has(`${activeModule}-${currentLesson.id}`) ? 'Пройдено' : 'Отметить пройденным'}
+                            </Button>
+                          </div>
+
+                          <Card className="bg-slate-800/40 border-purple-500/20 mb-6">
+                            <CardHeader>
+                              <CardTitle className="text-white flex items-center gap-2">
+                                <Icon name="FileText" size={20} className="text-purple-400" />
+                                Описание урока
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <p className="text-slate-300 leading-relaxed">{currentLesson.description}</p>
+                            </CardContent>
+                          </Card>
+
+                          <div className="grid md:grid-cols-2 gap-4">
+                            {currentModule.lessons
+                              .filter(l => l.id !== currentLesson.id)
+                              .slice(0, 2)
+                              .map(nextLesson => (
+                                <Card 
+                                  key={nextLesson.id}
+                                  className="bg-slate-800/40 border-purple-500/20 hover:border-purple-500/40 cursor-pointer hover-scale"
+                                  onClick={() => setSelectedLesson({ moduleId: activeModule, lessonId: nextLesson.id })}
+                                >
+                                  <CardContent className="p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <Icon name="PlayCircle" size={16} className="text-purple-400" />
+                                      <span className="text-xs text-slate-500">Следующий урок</span>
+                                    </div>
+                                    <p className="text-sm font-medium text-white mb-1">{nextLesson.title}</p>
+                                    <p className="text-xs text-slate-400">{nextLesson.duration}</p>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
