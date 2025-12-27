@@ -1,0 +1,31 @@
+{
+  "tests": [
+    {
+      "name": "Create payment request",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "email": "test@example.com",
+        "phone": "+79991234567"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "payment_id": "number",
+        "message": "string",
+        "card_number": "2204320428267423",
+        "amount": 2990
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Check payment status",
+      "method": "GET",
+      "path": "/?email=test@example.com",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "has_access": "boolean"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

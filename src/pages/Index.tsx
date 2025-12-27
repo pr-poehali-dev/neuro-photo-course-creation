@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,6 +16,52 @@ const Index = () => {
   const [selectedLesson, setSelectedLesson] = useState<{moduleId: number, lessonId: number} | null>(null);
   const [progress, setProgress] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handlePayment = async () => {
+    if (!email) {
+      toast({
+        title: 'Ошибка',
+        description: 'Укажите email',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('https://functions.poehali.dev/befaee1f-f98e-4427-bfb6-f2b23ca5cb34', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, phone })
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        toast({
+          title: 'Заявка принята!',
+          description: 'После оплаты на ' + email + ' придет доступ к курсу',
+        });
+      } else {
+        toast({
+          title: 'Ошибка',
+          description: data.error || 'Попробуйте позже',
+          variant: 'destructive'
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось отправить заявку',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const toggleLessonComplete = (moduleId: number, lessonId: number) => {
     const key = `${moduleId}-${lessonId}`;
@@ -263,7 +312,32 @@ const Index = () => {
                         <span>Бессрочный доступ</span>
                       </div>
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div>
+                          <Label htmlFor="email" className="text-slate-300">Email для доступа *</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="your@email.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="bg-slate-800/50 border-purple-500/20 text-white mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="phone" className="text-slate-300">Телефон (опционально)</Label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            placeholder="+7 999 123-45-67"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            className="bg-slate-800/50 border-purple-500/20 text-white mt-1"
+                          />
+                        </div>
+                      </div>
+                      
                       <div className="bg-slate-800/50 p-4 rounded-xl border border-purple-500/20">
                         <div className="text-sm text-slate-400 mb-2">Номер карты для оплаты:</div>
                         <div className="flex items-center gap-3">
@@ -280,9 +354,14 @@ const Index = () => {
                           </Button>
                         </div>
                       </div>
-                      <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl" size="lg">
+                      <Button 
+                        className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl" 
+                        size="lg"
+                        onClick={handlePayment}
+                        disabled={isSubmitting}
+                      >
                         <Icon name="CreditCard" className="mr-2" size={20} />
-                        Я оплатил
+                        {isSubmitting ? 'Отправка...' : 'Я оплатил'}
                       </Button>
                     </div>
                     <p className="text-xs text-center text-slate-500">
