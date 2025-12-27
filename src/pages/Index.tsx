@@ -79,62 +79,67 @@ const Index = () => {
   const modulesWithLessons = [
     {
       id: 1,
-      title: 'Основы нейрофотосессии',
-      description: 'Погружение в мир AI-фотографии: от теории до практики',
+      title: 'Основы автоматизации',
+      description: 'Погружение в мир автоматизации бизнеса без программирования',
       icon: 'Sparkles',
-      duration: '3 часа',
-      topics: ['Введение в нейросети', 'Выбор платформ', 'Базовые принципы', 'Анализ трендов'],
+      duration: '25 мин',
+      topics: ['Что такое автоматизация', 'Где искать задачи', 'Обзор инструментов'],
       lessons: [
-        { id: 1, title: 'Введение в нейрофотографию', duration: '12:34', description: 'Что такое нейрофотография и почему она меняет индустрию', videoUrl: '#' },
-        { id: 2, title: 'Выбор AI-платформы', duration: '18:22', description: 'Обзор лучших платформ: Midjourney, DALL-E, Stable Diffusion', videoUrl: '#' },
-        { id: 3, title: 'Первая генерация', duration: '15:45', description: 'Создаём первое AI-изображение пошагово', videoUrl: '#' },
-        { id: 4, title: 'Анализ трендов 2025', duration: '22:11', description: 'Какие стили сейчас в топе и почему', videoUrl: '#' },
-        { id: 5, title: 'Базовые параметры', duration: '19:33', description: 'Разбираем ключевые настройки генерации', videoUrl: '#' },
-        { id: 6, title: 'Этика и авторство', duration: '14:28', description: 'Правовые аспекты использования AI-изображений', videoUrl: '#' },
-        { id: 7, title: 'Референсы и стили', duration: '17:55', description: 'Как правильно использовать референсные изображения', videoUrl: '#' },
-        { id: 8, title: 'Практическое задание', duration: '25:00', description: 'Создаём 5 разных стилей одного портрета', videoUrl: '#' }
+        { id: 1, title: 'Что такое автоматизация и почему она нужна', duration: '7:00', description: 'Реальные примеры экономии времени и денег', videoUrl: '#' },
+        { id: 2, title: 'Где искать задачи для автоматизации', duration: '8:00', description: 'Чек-лист анализа своих процессов', videoUrl: '#' },
+        { id: 3, title: 'Инструменты автоматизации — обзор', duration: '9:00', description: 'Zapier, Make, n8n: что выбрать для старта', videoUrl: '#' }
       ]
     },
     {
       id: 2,
-      title: 'Промты и техники генерации',
-      description: 'Создание идеальных промтов для профессиональных результатов',
-      icon: 'Wand2',
-      duration: '5 часов',
-      topics: ['Структура промта', 'Стилизация', 'Композиция', 'Освещение и настроение'],
+      title: 'Автоматизация коммуникаций',
+      description: 'Telegram, WhatsApp, Email на автопилоте',
+      icon: 'MessageSquare',
+      duration: '36 мин',
+      topics: ['Telegram боты', 'WhatsApp рассылки', 'Email-цепочки', 'Квалификация клиентов'],
       lessons: [
-        { id: 1, title: 'Анатомия идеального промта', duration: '21:12', description: 'Структура промта: что писать и в каком порядке', videoUrl: '#' },
-        { id: 2, title: 'Ключевые слова и модификаторы', duration: '18:44', description: 'Магические слова, которые улучшают результат', videoUrl: '#' },
-        { id: 3, title: 'Управление композицией', duration: '23:15', description: 'Как задать нужный ракурс и кадрирование', videoUrl: '#' },
-        { id: 4, title: 'Работа с освещением', duration: '19:38', description: 'Cinematic lighting, golden hour и другие приёмы', videoUrl: '#' },
-        { id: 5, title: 'Стилизация: от реализма до фэнтези', duration: '26:42', description: 'Как задать художественный стиль изображению', videoUrl: '#' },
-        { id: 6, title: 'Negative prompts', duration: '16:33', description: 'Что исключить, чтобы получить идеальный результат', videoUrl: '#' },
-        { id: 7, title: 'Работа с деталями', duration: '20:55', description: 'Как прописать текстуры, материалы, детали одежды', videoUrl: '#' },
-        { id: 8, title: 'Эмоции и настроение', duration: '17:28', description: 'Передаём чувства через AI-генерацию', videoUrl: '#' },
-        { id: 9, title: 'Портретные промты', duration: '24:11', description: 'Специфика создания портретов высокого качества', videoUrl: '#' },
-        { id: 10, title: 'Лайфстайл сцены', duration: '22:37', description: 'Создаём атмосферные повседневные сцены', videoUrl: '#' },
-        { id: 11, title: 'Коммерческая фотография', duration: '19:44', description: 'Промты для продуктовой и рекламной съёмки', videoUrl: '#' },
-        { id: 12, title: 'Творческое задание', duration: '28:00', description: 'Создаём серию из 10 изображений в едином стиле', videoUrl: '#' }
+        { id: 1, title: 'Автоответчик в Telegram за 15 минут', duration: '10:00', description: 'Создаём бота, который отвечает клиентам 24/7', videoUrl: '#' },
+        { id: 2, title: 'Рассылка в WhatsApp без блокировки', duration: '9:00', description: 'Безопасные методы массовой рассылки', videoUrl: '#' },
+        { id: 3, title: 'Автоматические email-цепочки', duration: '8:00', description: 'Настройка последовательности писем в Mailchimp', videoUrl: '#' },
+        { id: 4, title: 'Чат-бот для квалификации клиентов', duration: '10:00', description: 'Бот задаёт вопросы и сохраняет данные в таблицу', videoUrl: '#' }
       ]
     },
     {
       id: 3,
-      title: 'Монетизация и продвижение',
-      description: 'Превращение навыков в стабильный доход',
-      icon: 'TrendingUp',
-      duration: '4 часа',
-      topics: ['Поиск клиентов', 'Ценообразование', 'Портфолио', 'Маркетинг в соцсетях'],
+      title: 'Автоматизация данных',
+      description: 'Сбор заявок, отчёты, мониторинг конкурентов',
+      icon: 'Database',
+      duration: '26 мин',
+      topics: ['Сбор заявок', 'Автоотчёты', 'Парсинг конкурентов'],
       lessons: [
-        { id: 1, title: 'Ниши и целевая аудитория', duration: '18:22', description: 'Где искать клиентов для AI-фотографий', videoUrl: '#' },
-        { id: 2, title: 'Создание портфолио', duration: '22:15', description: 'Как правильно оформить работы для продажи', videoUrl: '#' },
-        { id: 3, title: 'Ценообразование', duration: '16:44', description: 'Сколько стоит нейрофотосессия в 2025', videoUrl: '#' },
-        { id: 4, title: 'Площадки для продаж', duration: '20:33', description: 'Где продавать: стоки, маркетплейсы, соцсети', videoUrl: '#' },
-        { id: 5, title: 'Instagram для AI-фотографа', duration: '24:11', description: 'Стратегия продвижения в Instagram', videoUrl: '#' },
-        { id: 6, title: 'TikTok и YouTube Shorts', duration: '17:55', description: 'Вирусный контент с AI-генерациями', videoUrl: '#' },
-        { id: 7, title: 'Работа с клиентами', duration: '19:28', description: 'От первого контакта до сдачи проекта', videoUrl: '#' },
-        { id: 8, title: 'Пакеты услуг', duration: '15:42', description: 'Как упаковать предложения для разных ниш', videoUrl: '#' },
-        { id: 9, title: 'Масштабирование', duration: '21:37', description: 'От фриланса к агентству AI-фотографии', videoUrl: '#' },
-        { id: 10, title: 'Финальный проект', duration: '30:00', description: 'Создаём коммерческий кейс от А до Я', videoUrl: '#' }
+        { id: 1, title: 'Автосбор заявок из всех источников', duration: '9:00', description: 'Email, форма, Telegram, WhatsApp в одну таблицу', videoUrl: '#' },
+        { id: 2, title: 'Автоматические отчёты в Google Sheets', duration: '8:00', description: 'Еженедельные отчёты на почту без участия человека', videoUrl: '#' },
+        { id: 3, title: 'Мониторинг конкурентов на автопилоте', duration: '9:00', description: 'Отслеживание цен и акций конкурентов', videoUrl: '#' }
+      ]
+    },
+    {
+      id: 4,
+      title: 'Автоматизация продаж',
+      description: 'Воронки, брошенные корзины, апсейл, реферальная программа',
+      icon: 'TrendingUp',
+      duration: '34 мин',
+      topics: ['Воронка продаж', 'Возврат клиентов', 'Увеличение чека', 'Реферальная система'],
+      lessons: [
+        { id: 1, title: 'Автоматическая воронка продаж', duration: '10:00', description: 'От заявки до покупки без вашего участия', videoUrl: '#' },
+        { id: 2, title: 'Брошенные корзины — возвращаем клиентов', duration: '8:00', description: 'Серия писем для возврата +30% покупателей', videoUrl: '#' },
+        { id: 3, title: 'Автоматический апсейл после покупки', duration: '7:00', description: 'Увеличиваем средний чек предложениями', videoUrl: '#' },
+        { id: 4, title: 'Реферальная программа на автопилоте', duration: '9:00', description: 'Клиенты приводят клиентов — система сама платит бонусы', videoUrl: '#' }
+      ]
+    },
+    {
+      id: 5,
+      title: 'Итоговый проект',
+      description: 'Связываем все автоматизации в единую систему',
+      icon: 'Rocket',
+      duration: '12 мин',
+      topics: ['Интеграция всех систем', 'Реальный кейс', 'Экономия времени'],
+      lessons: [
+        { id: 1, title: 'Связка всех автоматизаций', duration: '12:00', description: 'От заявки до продажи — единая автоматическая система', videoUrl: '#' }
       ]
     }
   ];
