@@ -493,29 +493,52 @@ const Index = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {Array.from({ length: 12 }).map((_, index) => (
-                <Card 
-                  key={index}
-                  className="bg-slate-800/40 border-purple-500/20 overflow-hidden group hover-scale cursor-pointer"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <div className="aspect-square bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Icon name="Image" size={64} className="text-white/20 group-hover:scale-110 transition-transform" />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                      <div className="space-y-1">
-                        <p className="text-white font-semibold text-sm">AI Portrait #{index + 1}</p>
-                        <p className="text-slate-300 text-xs">Trending style</p>
+                <Dialog key={index}>
+                  <DialogTrigger asChild>
+                    <Card 
+                      className="bg-slate-800/40 border-purple-500/20 overflow-hidden group hover-scale cursor-pointer"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <div className="aspect-square bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 relative overflow-hidden">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Icon name="Image" size={64} className="text-white/20 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                          <div className="space-y-1">
+                            <p className="text-white font-semibold text-sm">AI Portrait #{index + 1}</p>
+                            <p className="text-slate-300 text-xs">Trending style</p>
+                          </div>
+                        </div>
+                        {index % 3 === 0 && (
+                          <Badge className="absolute top-2 right-2 bg-pink-500 text-white border-0 text-xs">
+                            <Icon name="TrendingUp" size={12} className="mr-1" />
+                            Hot
+                          </Badge>
+                        )}
+                      </div>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent className="bg-slate-900 border-purple-500/30 max-w-3xl">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl text-purple-300">AI Portrait #{index + 1}</DialogTitle>
+                      <DialogDescription className="text-slate-400">
+                        Пример работы в стиле нейрофотографии
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="aspect-square bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-blue-600/20 relative overflow-hidden rounded-xl">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Icon name="Image" size={96} className="text-white/20" />
                       </div>
                     </div>
-                    {index % 3 === 0 && (
-                      <Badge className="absolute top-2 right-2 bg-pink-500 text-white border-0 text-xs">
-                        <Icon name="TrendingUp" size={12} className="mr-1" />
-                        Hot
-                      </Badge>
-                    )}
-                  </div>
-                </Card>
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">Portrait</Badge>
+                        <Badge className="bg-pink-500/20 text-pink-300 border-pink-500/30">AI Generated</Badge>
+                      </div>
+                      <p className="text-slate-300 text-sm">Изображение скоро появится в галерее</p>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               ))}
             </div>
 
@@ -683,15 +706,24 @@ const Index = () => {
                     <>
                       {/* Video Player */}
                       <div className="relative bg-black aspect-video">
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-slate-900/20">
-                          <div className="text-center">
-                            <div className="w-20 h-20 rounded-full bg-purple-600/20 flex items-center justify-center mb-4 mx-auto hover-scale cursor-pointer">
-                              <Icon name="Play" size={40} className="text-purple-400 ml-1" />
+                        {currentLesson.videoUrl && currentLesson.videoUrl !== '#' ? (
+                          <iframe
+                            src={currentLesson.videoUrl}
+                            className="w-full h-full"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-slate-900/20">
+                            <div className="text-center">
+                              <div className="w-20 h-20 rounded-full bg-purple-600/20 flex items-center justify-center mb-4 mx-auto hover-scale cursor-pointer">
+                                <Icon name="Play" size={40} className="text-purple-400 ml-1" />
+                              </div>
+                              <p className="text-slate-400">Видео скоро появится</p>
+                              <p className="text-xs text-slate-500 mt-1">Длительность: {currentLesson.duration}</p>
                             </div>
-                            <p className="text-slate-400">Видеоплеер</p>
-                            <p className="text-xs text-slate-500 mt-1">{currentLesson.duration}</p>
                           </div>
-                        </div>
+                        )}
                       </div>
 
                       {/* Lesson Info */}
