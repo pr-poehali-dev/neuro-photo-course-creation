@@ -263,12 +263,30 @@ const Index = () => {
                         <span>Бессрочный доступ</span>
                       </div>
                     </div>
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl" size="lg">
-                      <Icon name="CreditCard" className="mr-2" size={20} />
-                      Оплатить через СБП
-                    </Button>
+                    <div className="space-y-3">
+                      <div className="bg-slate-800/50 p-4 rounded-xl border border-purple-500/20">
+                        <div className="text-sm text-slate-400 mb-2">Номер карты для оплаты:</div>
+                        <div className="flex items-center gap-3">
+                          <code className="text-lg font-mono text-purple-300">2204 3204 2826 7423</code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10"
+                            onClick={() => {
+                              navigator.clipboard.writeText('2204320428267423');
+                            }}
+                          >
+                            <Icon name="Copy" size={16} />
+                          </Button>
+                        </div>
+                      </div>
+                      <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl" size="lg">
+                        <Icon name="CreditCard" className="mr-2" size={20} />
+                        Я оплатил
+                      </Button>
+                    </div>
                     <p className="text-xs text-center text-slate-500">
-                      Безопасная оплата через Систему быстрых платежей
+                      После оплаты вы получите доступ к курсу
                     </p>
                   </div>
                 </DialogContent>
