@@ -238,7 +238,11 @@ const Index = () => {
                   </DialogHeader>
                   <div className="space-y-6 py-4">
                     <div className="text-center">
-                      <div className="text-5xl font-bold text-white mb-2">14 990 ₽</div>
+                      <div className="flex items-center justify-center gap-3 mb-2">
+                        <span className="text-3xl font-bold text-slate-500 line-through">5 990 ₽</span>
+                        <Badge className="bg-pink-500 text-white border-0">-50%</Badge>
+                      </div>
+                      <div className="text-5xl font-bold text-white mb-2">2 990 ₽</div>
                       <div className="text-slate-400">Единоразовая оплата</div>
                     </div>
                     <div className="space-y-3">
@@ -518,7 +522,7 @@ const Index = () => {
             <DialogTrigger asChild>
               <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg px-12 py-6 rounded-xl shadow-2xl hover-scale">
                 <Icon name="Rocket" className="mr-2" size={20} />
-                Купить курс за 14 990 ₽
+                Купить курс за 2 990 ₽
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-slate-900 border-purple-500/30 max-w-md">
@@ -530,7 +534,11 @@ const Index = () => {
               </DialogHeader>
               <div className="space-y-6 py-4">
                 <div className="text-center">
-                  <div className="text-5xl font-bold text-white mb-2">14 990 ₽</div>
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <span className="text-3xl font-bold text-slate-500 line-through">5 990 ₽</span>
+                    <Badge className="bg-pink-500 text-white border-0">-50%</Badge>
+                  </div>
+                  <div className="text-5xl font-bold text-white mb-2">2 990 ₽</div>
                   <div className="text-slate-400">Единоразовая оплата</div>
                 </div>
                 <div className="space-y-3">
